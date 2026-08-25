@@ -1,0 +1,7 @@
+# <type>(<scope>): <subject>
+#
+# Types: feat, fix, docs, refactor, test, chore, perf, ci, revert
+# Suggested scopes: planning, backend, frontend, auth, tasks, llm, tts, storage
+# Subject: imperative mood, concise, no trailing period
+#
+# Explain why in the optional body.

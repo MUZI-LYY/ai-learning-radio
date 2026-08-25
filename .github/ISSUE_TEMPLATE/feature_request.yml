@@ -1,0 +1,33 @@
+name: 功能建议
+description: 提议一个范围清晰的改进
+title: "[Feature]: "
+labels: [enhancement, triage]
+body:
+  - type: checkboxes
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索现有 Issue，未发现相同建议。
+          required: true
+  - type: textarea
+    attributes:
+      label: 用户问题
+      description: 描述要解决的问题、使用场景和受益用户，不要只描述实现。
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 建议方案
+      description: 说明期望行为、最小范围和可接受的限制。
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 替代方案
+      description: 你考虑过哪些现有功能、手动流程或更小改动？
+  - type: textarea
+    attributes:
+      label: 隐私与成本影响
+      description: 是否涉及用户资料、外部 Provider、费用、授权内容或数据迁移？
+    validations:
+      required: true

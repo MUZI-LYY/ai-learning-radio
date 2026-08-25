@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">AI 学习电台</title>
+  <rect width="512" height="512" rx="112" fill="#0B203D"/>
+  <circle cx="256" cy="256" r="172" fill="#168CFF"/>
+  <path d="M126 174c45-23 89-14 130 25v190c-41-39-85-48-130-25V174Z" fill="#F7FBFF"/>
+  <path d="M386 174c-45-23-89-14-130 25v190c41-39 85-48 130-25V174Z" fill="#DDF1FF"/>
+  <path d="M256 199v190" stroke="#0B203D" stroke-width="14" stroke-linecap="round"/>
+  <path d="M168 276v34m32-65v96m32-75v54m48-54v54m32-75v96m32-65v34" fill="none" stroke="#0B203D" stroke-width="14" stroke-linecap="round"/>
+</svg>

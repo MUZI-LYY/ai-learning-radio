@@ -1,0 +1,59 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+service-account*.json
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Runtime data and private assets
+/data/
+/storage/
+/uploads/
+/logs/
+/private-assets/
+/private-materials/
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# Backups, dumps, and excluded third-party material
+*.bak
+*.backup
+*.dump
+The Founders Playbook - 中文译本.pdf
+
+# IDE and operating system
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+*.tmp

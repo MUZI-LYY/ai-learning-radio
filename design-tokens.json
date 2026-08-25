@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json.schemastore.org/design-tokens.json",
+  "meta": {
+    "name": "AI Learning Radio",
+    "version": "4.0.0",
+    "updated": "2026-08-23"
+  },
+  "color": {
+    "background": { "$type": "color", "$value": "#EEF6FF" },
+    "surface": { "$type": "color", "$value": "#FFFFFF" },
+    "surfaceMuted": { "$type": "color", "$value": "#E2EDF9" },
+    "ink": { "$type": "color", "$value": "#151B2B" },
+    "inkSoft": { "$type": "color", "$value": "#2A3348" },
+    "muted": { "$type": "color", "$value": "#667085" },
+    "mutedLight": { "$type": "color", "$value": "#98A2B3" },
+    "line": { "$type": "color", "$value": "#D6E3F1" },
+    "signal": { "$type": "color", "$value": "#168CFF" },
+    "signalStrong": { "$type": "color", "$value": "#075FBD" },
+    "violet": { "$type": "color", "$value": "#9C4DFF" },
+    "danger": { "$type": "color", "$value": "#B4233B" }
+  },
+  "space": {
+    "1": { "$type": "dimension", "$value": "4px" },
+    "2": { "$type": "dimension", "$value": "8px" },
+    "3": { "$type": "dimension", "$value": "12px" },
+    "4": { "$type": "dimension", "$value": "16px" },
+    "5": { "$type": "dimension", "$value": "20px" },
+    "6": { "$type": "dimension", "$value": "24px" },
+    "8": { "$type": "dimension", "$value": "32px" },
+    "10": { "$type": "dimension", "$value": "40px" }
+  },
+  "radius": {
+    "control": { "$type": "dimension", "$value": "8px" },
+    "container": { "$type": "dimension", "$value": "14px" },
+    "feature": { "$type": "dimension", "$value": "20px" },
+    "round": { "$type": "dimension", "$value": "999px" }
+  },
+  "typography": {
+    "family": { "$type": "fontFamily", "$value": ["-apple-system", "BlinkMacSystemFont", "Segoe UI", "PingFang SC", "sans-serif"] },
+    "pageTitle": { "$type": "typography", "$value": { "fontFamily": "{typography.family}", "fontSize": "28px", "fontWeight": 800, "letterSpacing": "-0.04em", "lineHeight": 1.2 } },
+    "sectionTitle": { "$type": "typography", "$value": { "fontFamily": "{typography.family}", "fontSize": "22px", "fontWeight": 760, "letterSpacing": "-0.025em", "lineHeight": 1.3 } },
+    "episodeTitle": { "$type": "typography", "$value": { "fontFamily": "{typography.family}", "fontSize": "18px", "fontWeight": 760, "letterSpacing": "-0.035em", "lineHeight": 1.3 } },
+    "body": { "$type": "typography", "$value": { "fontFamily": "{typography.family}", "fontSize": "16px", "fontWeight": 400, "letterSpacing": "0em", "lineHeight": 1.7 } },
+    "secondary": { "$type": "typography", "$value": { "fontFamily": "{typography.family}", "fontSize": "14px", "fontWeight": 400, "letterSpacing": "0em", "lineHeight": 1.55 } },
+    "meta": { "$type": "typography", "$value": { "fontFamily": "{typography.family}", "fontSize": "12px", "fontWeight": 650, "letterSpacing": "0em", "lineHeight": 1.4 } }
+  },
+  "size": {
+    "touchTarget": { "$type": "dimension", "$value": "44px" },
+    "playButton": { "$type": "dimension", "$value": "68px" },
+    "miniPlayer": { "$type": "dimension", "$value": "72px" },
+    "artworkToday": { "$type": "dimension", "$value": "126px" },
+    "artworkSmall": { "$type": "dimension", "$value": "64px" },
+    "bottomNavigation": { "$type": "dimension", "$value": "72px" },
+    "contentMaxWidth": { "$type": "dimension", "$value": "500px" }
+  },
+  "shadow": {
+    "feature": { "$type": "shadow", "$value": { "color": "#435F821A", "offsetX": "0px", "offsetY": "12px", "blur": "32px", "spread": "0px" } }
+  }
+}
