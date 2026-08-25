@@ -1,46 +1,47 @@
-"""FastAPI 依赖：数据库会话、当前用户、限流器。"""
+"""FastAPI 依赖：数据库会话与本地用户。"""
 
 from __future__ import annotations
 
-from functools import lru_cache
 from typing import Annotated
 
-from fastapi import Depends, Request
+from fastapi import Depends
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.core.config import get_settings
-from app.core.errors import ApiError, ErrorCode
 from app.db.session import get_session
 from app.models.user import User
-from app.services.auth.rate_limit import SlidingWindowRateLimiter
-from app.services.auth.session import COOKIE_NAME, get_user_by_token
 
 DbSession = Annotated[Session, Depends(get_session)]
+LOCAL_USER_ID = "00000000-0000-0000-0000-000000000001"
 
 
-def get_current_user(request: Request, db: DbSession) -> User:
-    """从会话 Cookie 解析当前用户；无效/过期/越权统一返回 UNAUTHORIZED。"""
-    token = request.cookies.get(COOKIE_NAME, "")
-    settings = get_settings()
-    user = get_user_by_token(db, token, settings.app_secret)
+def get_current_user(db: DbSession) -> User:
+    """返回本地单用户；首次访问时自动创建。"""
+    user = db.execute(
+        select(User)
+        .where(User.deleted_at.is_(None))
+        .order_by(User.created_at.asc(), User.id.asc())
+        .limit(1)
+    ).scalar_one_or_none()
+    if user is not None:
+        return user
+
+    user = db.get(User, LOCAL_USER_ID)
     if user is None:
-        raise ApiError(ErrorCode.UNAUTHORIZED)
+        user = User(id=LOCAL_USER_ID, display_name="本地用户")
+        db.add(user)
+    else:
+        user.deleted_at = None
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        user = db.get(User, LOCAL_USER_ID)
+        if user is None:
+            raise
+    db.refresh(user)
     return user
 
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
-
-
-@lru_cache
-def get_rate_limiter() -> SlidingWindowRateLimiter:
-    settings = get_settings()
-    return SlidingWindowRateLimiter(
-        window_seconds=settings.invite_rate_limit_window_seconds,
-        max_attempts=settings.invite_rate_limit_max_attempts,
-    )
-
-
-def client_ip(request: Request) -> str:
-    if request.client is None:
-        return "unknown"
-    return request.client.host

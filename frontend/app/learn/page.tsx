@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import BottomNav from "@/components/BottomNav";
 import VoicePicker from "@/components/VoicePicker";
 import { ApiError, api } from "@/lib/api";
@@ -12,17 +12,13 @@ const ACCEPT = ".docx,.pdf,.md";
 
 export default function LearnPage() {
   const router = useRouter();
-  const { me, loading, unauthorized, refresh } = useMe();
+  const { me, loading, refresh } = useMe();
   const [file, setFile] = useState<File | null>(null);
   const [focus, setFocus] = useState("");
   const [voiceKey, setVoiceKey] = useState("elegant_youth");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (unauthorized) router.replace("/");
-  }, [unauthorized, router]);
 
   if (loading || !me) {
     return <div className="min-h-dvh grid place-items-center text-slate-500">加载中…</div>;

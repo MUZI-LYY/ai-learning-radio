@@ -1,12 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ApiError, api, type MeResponse } from "./api";
+import { api, type MeResponse } from "./api";
 
 export function useMe() {
   const [me, setMe] = useState<MeResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  const [unauthorized, setUnauthorized] = useState(false);
   const [error, setError] = useState("");
 
   const refresh = useCallback(async () => {
@@ -14,16 +13,9 @@ export function useMe() {
     setError("");
     try {
       setMe(await api<MeResponse>("/api/v1/me"));
-      setUnauthorized(false);
-    } catch (e) {
-      if (e instanceof ApiError && e.status === 401) {
-        setUnauthorized(true);
-        setMe(null);
-      } else {
-        setMe(null);
-        setUnauthorized(false);
-        setError("连接服务失败，请确认本地服务已启动后重试。");
-      }
+    } catch {
+      setMe(null);
+      setError("连接服务失败，请确认本地服务已启动后重试。");
     } finally {
       setLoading(false);
     }
@@ -35,5 +27,5 @@ export function useMe() {
     void refresh();
   }, [refresh]);
 
-  return { me, loading, unauthorized, error, refresh };
+  return { me, loading, error, refresh };
 }

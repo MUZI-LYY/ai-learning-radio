@@ -56,7 +56,7 @@ def test_generate_news_program(client, login):
         titles = [item.title for item in script.items]
         assert len(titles) == len(set(titles))
 
-    # 新闻节目对所有登录用户共享
+    # 新闻节目在本地应用内共享
     response = client.get("/api/v1/news/programs")
     assert response.status_code == 200
     channels = {p["channel"] for p in response.json()}
@@ -169,8 +169,8 @@ def test_news_detail_and_audio(client, login):
     assert audio.headers["expires"] == "0"
 
 
-def test_news_favorite_is_persistent_idempotent_and_user_scoped(client, login):
-    code, _ = login()
+def test_news_favorite_is_persistent_and_idempotent(client, login):
+    login()
     factory = get_session_factory()
     with factory() as db:
         _seed_sources(db)
@@ -187,18 +187,12 @@ def test_news_favorite_is_persistent_idempotent_and_user_scoped(client, login):
     assert favorites[0]["program_id"] == program_id
     assert favorites[0]["title"] == "推理效率与工作流设计正在决定 AI 产品落地速度"
 
-    login()
-    assert client.get("/api/v1/news/favorites").json() == []
-    assert client.delete(favorite_url).json() == {"is_favorited": False}
-
-    client.post("/api/v1/auth/invite", json={"invite_code": code})
-    assert len(client.get("/api/v1/news/favorites").json()) == 1
     assert client.delete(favorite_url).json() == {"is_favorited": False}
     assert client.get("/api/v1/news/favorites").json() == []
 
 
-def test_news_requires_auth(client):
-    assert client.get("/api/v1/news/channels").status_code == 401
+def test_news_is_available_without_login(client):
+    assert client.get("/api/v1/news/channels").status_code == 200
 
 
 def test_invalid_channel_is_rejected(client, login):

@@ -52,18 +52,3 @@ def test_play_event_idempotent(client, login):
             .count()
         )
     assert count == 1
-
-
-def test_event_requires_owned_program(client, login, make_invite):
-    login()
-    program_id = _create_and_complete(client)
-
-    client.post("/api/v1/auth/logout")
-    code_b, _ = make_invite()
-    client.post("/api/v1/auth/invite", json={"invite_code": code_b})
-
-    response = client.post(
-        "/api/v1/events",
-        json={"event_name": "program_play_started", "program_id": program_id},
-    )
-    assert response.status_code == 404

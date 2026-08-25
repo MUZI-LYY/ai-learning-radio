@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AppIcon from "@/components/AppIcon";
 import { api } from "@/lib/api";
 import { useMe } from "@/lib/use-me";
@@ -10,21 +10,9 @@ const CONFIRM_PHRASE = "删除全部数据";
 
 export default function AccountSettingsPage() {
   const router = useRouter();
-  const { me, loading, unauthorized } = useMe();
+  const { me, loading } = useMe();
   const [confirmText, setConfirmText] = useState("");
   const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    if (unauthorized) router.replace("/");
-  }, [unauthorized, router]);
-
-  async function logout() {
-    try {
-      await api("/api/v1/auth/logout", { method: "POST" });
-    } finally {
-      router.replace("/");
-    }
-  }
 
   async function deleteAll() {
     if (confirmText !== CONFIRM_PHRASE) return;
@@ -58,11 +46,6 @@ export default function AccountSettingsPage() {
           <span aria-hidden="true"><AppIcon name="account" size={34} filled /></span>
           <div><strong>亲爱的用户</strong><small>AI 学习电台听众</small></div>
         </div>
-
-        <section className="account-settings__group">
-          <h2>账号</h2>
-          <button type="button" className="account-settings__logout" onClick={logout}>退出登录</button>
-        </section>
 
         <section className="account-settings__group account-settings__danger">
           <h2>个人数据</h2>

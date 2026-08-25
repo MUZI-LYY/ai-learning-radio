@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AppIcon from "@/components/AppIcon";
 import AudioPlayer from "@/components/AudioPlayer";
@@ -126,8 +125,7 @@ function PersonalProgramCard({
 }
 
 export default function ProgramsPage() {
-  const router = useRouter();
-  const { me, loading, unauthorized } = useMe();
+  const { me, loading } = useMe();
   const [programs, setPrograms] = useState<ProgramSummary[]>([]);
   const [favorites, setFavorites] = useState<NewsFavoriteSummary[]>([]);
   const [activeTab, setActiveTab] = useState<"private" | "favorites">("private");
@@ -135,10 +133,6 @@ export default function ProgramsPage() {
   const [loadError, setLoadError] = useState("");
   const [playerLoadingKey, setPlayerLoadingKey] = useState("");
   const [playback, setPlayback] = useState<LibraryPlayback | null>(null);
-
-  useEffect(() => {
-    if (unauthorized) router.replace("/");
-  }, [unauthorized, router]);
 
   useEffect(() => {
     if (!me) return;

@@ -60,7 +60,7 @@ AI 学习电台把零散资讯和个人文档整理成中文讲解、音频、�
 
 ```text
 Next.js 16 Web（3001）
-        │ HTTP / Cookie
+        │ HTTP
         ▼
 FastAPI API（8002） ── SQLAlchemy / Alembic ── SQLite
         │                                          │
@@ -86,14 +86,7 @@ cd ai-learning-radio
 
 `setup.sh` 是幂等安装脚本：它检查工具版本，在配置不存在时复制安全示例，按锁文件安装依赖并执行数据库迁移。脚本不会启动服务，也不会调用真实 Provider。
 
-首次使用时创建邀请码：
-
-```bash
-cd backend
-uv run python -m scripts.create_invite --name "本地用户"
-```
-
-然后在三个终端分别运行：
+安装完成后，在三个终端分别运行：
 
 ```bash
 # 终端 1：API
@@ -109,7 +102,7 @@ cd frontend
 npm run dev
 ```
 
-打开 <http://127.0.0.1:3001>。API 文档位于 <http://127.0.0.1:8002/docs>。
+Web 启动后按终端输出打开页面；API 文档可通过后端服务的 `/docs` 路径查看。首次访问会自动创建本地用户，可以直接开始使用。
 
 <details>
 <summary>手动安装</summary>
@@ -153,7 +146,9 @@ uv run python -m scripts.generate_news
 
 ```dotenv
 LLM_PROVIDER=volcark
+LLM_API_KEY=your-llm-api-key
 TTS_PROVIDER=volc
+TTS_API_KEY=your-tts-api-key
 PROVIDER_CALLS_ENABLED=true
 PROJECT_MONTHLY_BUDGET_CNY=100
 ```
@@ -163,7 +158,7 @@ PROJECT_MONTHLY_BUDGET_CNY=100
 ## 安全、隐私与部署边界
 
 - `.env`、数据库、上传资料、生成音频和私有存储不应提交 Git；建议在发布流程中使用 Secret Scanner。
-- 非开发环境会拒绝默认 `APP_SECRET`/`INVITE_CODE_PEPPER`、不安全 Cookie 和非 HTTPS 前端来源。
+- 应用采用本地单用户模式，不内置登录与访问控制；如需从公网访问，请在反向代理或网关层增加身份认证。
 - 生产凭证应放入部署平台的 Secret 管理服务，不能写入镜像或仓库。
 - SQLite 和本地文件存储适合个人开发或受控试用。公开部署前应评估托管数据库、对象存储、备份、队列、观测、限流和数据删除机制。
 - AI 生成内容可能遗漏或出错；新闻与学习节目应回看原始来源，不能替代专业意见。

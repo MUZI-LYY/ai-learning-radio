@@ -1,20 +1,12 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-
-
-class InviteRequest(BaseModel):
-    invite_code: str = Field(min_length=1, max_length=256)
+from pydantic import BaseModel
 
 
 class UserSummary(BaseModel):
     id: str
     display_name: str
     role: str
-
-
-class AuthResponse(BaseModel):
-    user: UserSummary
 
 
 class QuotaInfo(BaseModel):

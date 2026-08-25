@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AppIcon from "@/components/AppIcon";
 import BottomNav from "@/components/BottomNav";
@@ -9,13 +8,8 @@ import { api, type ProgramSummary } from "@/lib/api";
 import { useMe } from "@/lib/use-me";
 
 export default function AccountPage() {
-  const router = useRouter();
-  const { me, loading, unauthorized } = useMe();
+  const { me, loading } = useMe();
   const [generatedCount, setGeneratedCount] = useState(0);
-
-  useEffect(() => {
-    if (unauthorized) router.replace("/");
-  }, [unauthorized, router]);
 
   useEffect(() => {
     if (!me) return;

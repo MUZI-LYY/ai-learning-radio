@@ -16,10 +16,6 @@ class User(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     role: Mapped[str] = mapped_column(String(16), default=UserRole.USER.value, index=True)
     deleted_at: Mapped[datetime | None] = mapped_column(UTCDateTime(), nullable=True)
 
-    invite_credentials = relationship(
-        "InviteCredential", back_populates="user", cascade="all, delete-orphan"
-    )
-    sessions = relationship("Session", back_populates="user", cascade="all, delete-orphan")
     learning_sources = relationship(
         "LearningSource", back_populates="user", cascade="all, delete-orphan"
     )

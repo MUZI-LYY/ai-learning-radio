@@ -182,18 +182,3 @@ def test_tts_failure_degrades_to_text_ready(client, login, monkeypatch):
     assert retry.status_code == 200
     assert _run_until_terminal(task_id) == "completed"
     assert client.get(f"/api/v1/programs/{program_id}").json()["audio_ready"] is True
-
-
-def test_cross_user_cannot_access_program(client, login, make_invite):
-    login()
-    task_id = _create_task(client).json()["task_id"]
-    assert _run_until_terminal(task_id) == "completed"
-    program_id = client.get(f"/api/v1/tasks/{task_id}").json()["program_id"]
-
-    # 切换到另一个用户
-    client.post("/api/v1/auth/logout")
-    code_b, _ = make_invite()
-    assert client.post("/api/v1/auth/invite", json={"invite_code": code_b}).status_code == 200
-
-    assert client.get(f"/api/v1/programs/{program_id}").status_code == 404
-    assert client.get(f"/api/v1/programs/{program_id}/audio").status_code == 404

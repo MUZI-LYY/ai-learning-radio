@@ -13,11 +13,6 @@ from http import HTTPStatus
 class ErrorCode:
     """错误码常量。值本身即 API 响应中的稳定 code。"""
 
-    # 认证与会话
-    UNAUTHORIZED = "UNAUTHORIZED"
-    INVALID_INVITE = "INVALID_INVITE"
-    REVOKED_INVITE = "REVOKED_INVITE"
-    RATE_LIMITED = "RATE_LIMITED"
     CONFIRMATION_REQUIRED = "CONFIRMATION_REQUIRED"
 
     # 资源
@@ -49,10 +44,6 @@ class ErrorCode:
 
 # 错误码 -> (HTTP 状态码, 默认中文提示)
 _CODE_META: dict[str, tuple[int, str]] = {
-    ErrorCode.UNAUTHORIZED: (HTTPStatus.UNAUTHORIZED, "请先输入邀请码进入。"),
-    ErrorCode.INVALID_INVITE: (HTTPStatus.UNAUTHORIZED, "邀请码无效，请检查后重试。"),
-    ErrorCode.REVOKED_INVITE: (HTTPStatus.UNAUTHORIZED, "该邀请码已作废，请联系管理员。"),
-    ErrorCode.RATE_LIMITED: (HTTPStatus.TOO_MANY_REQUESTS, "尝试过于频繁，请稍后再试。"),
     ErrorCode.CONFIRMATION_REQUIRED: (HTTPStatus.BAD_REQUEST, "请提交二次确认短语。"),
     ErrorCode.RESOURCE_NOT_FOUND: (HTTPStatus.NOT_FOUND, "资源不存在或无权访问。"),
     ErrorCode.INVALID_TASK_STATE: (HTTPStatus.CONFLICT, "任务当前状态不允许该操作。"),

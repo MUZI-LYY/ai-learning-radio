@@ -10,13 +10,9 @@ import { useMe } from "@/lib/use-me";
 export default function NewsSourcesPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const { me, loading, unauthorized } = useMe();
+  const { me, loading } = useMe();
   const [program, setProgram] = useState<NewsProgramDetail | null>(null);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (unauthorized) router.replace("/");
-  }, [unauthorized, router]);
 
   useEffect(() => {
     if (!me || !params.id) return;

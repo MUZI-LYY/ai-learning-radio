@@ -831,7 +831,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .account-settings__group { margin-top: 18px; padding: 18px; border: 1px solid rgba(255,255,255,.94); border-radius: 22px; background: rgba(255,255,255,.78); box-shadow: 0 8px 22px rgba(58,79,105,.07); }
 .account-settings__group h2 { margin: 0 0 13px; font-size: var(--type-headline); }
 .account-settings__group button { width: 100%; min-height: 48px; border-radius: 14px; font-size: var(--type-body); font-weight: 700; cursor: pointer; }
-.account-settings__logout { border: 1px solid var(--line); color: var(--ink); background: white; }
 .account-settings__danger { border-color: rgba(219,98,119,.2); background: rgba(255,246,248,.86); }
 .account-settings__danger h2 { color: var(--danger); }
 .account-settings__danger p { margin: 0; color: #9d4051; font-size: var(--type-secondary); line-height: 1.65; }

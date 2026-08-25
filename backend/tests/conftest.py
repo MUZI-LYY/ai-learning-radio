@@ -25,14 +25,12 @@ import pytest  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
 import app.models  # noqa: E402, F401
-from app.api.deps import get_rate_limiter  # noqa: E402
+from app.api.deps import LOCAL_USER_ID  # noqa: E402
 from app.core.config import get_settings  # noqa: E402
-from app.core.security import generate_invite_code, hash_credential  # noqa: E402
-from app.db.base import Base, utcnow  # noqa: E402
+from app.db.base import Base  # noqa: E402
 from app.db.session import build_engine, get_session_factory, reset_engine  # noqa: E402
 from app.main import create_app  # noqa: E402
 from app.models.enums import UserRole  # noqa: E402
-from app.models.invite_credential import InviteCredential  # noqa: E402
 from app.models.user import User  # noqa: E402
 
 
@@ -45,9 +43,7 @@ def _clean_state():
     Base.metadata.create_all(engine)
     engine.dispose()
     shutil.rmtree(get_settings().private_storage_root, ignore_errors=True)
-    get_rate_limiter().reset()
     yield
-    get_rate_limiter().reset()
 
 
 @pytest.fixture()
@@ -58,37 +54,18 @@ def client():
 
 
 @pytest.fixture()
-def make_invite():
-    """创建用户 + 邀请码，返回 (明文邀请码, 用户)。"""
-
-    def _make(code: str | None = None, *, revoked: bool = False, role: str = UserRole.USER.value):
-        code = code or generate_invite_code()
-        factory = get_session_factory()
-        with factory() as db:
-            user = User(display_name="测试用户", role=role)
-            db.add(user)
-            db.flush()
-            db.add(
-                InviteCredential(
-                    user_id=user.id,
-                    code_digest=hash_credential(code, get_settings().invite_code_pepper),
-                    revoked_at=utcnow() if revoked else None,
-                )
-            )
-            db.commit()
-            return code, user
-
-    return _make
-
-
-@pytest.fixture()
-def login(client, make_invite):
-    """登录并返回 (明文邀请码, 用户)。"""
+def login(client):
+    """初始化并返回自动创建的本地用户。"""
 
     def _login(role: str = UserRole.USER.value):
-        code, user = make_invite(role=role)
-        response = client.post("/api/v1/auth/invite", json={"invite_code": code})
+        response = client.get("/api/v1/me")
         assert response.status_code == 200
-        return code, user
+        factory = get_session_factory()
+        with factory() as db:
+            user = db.get(User, LOCAL_USER_ID)
+            assert user is not None
+            user.role = role
+            db.commit()
+            return user
 
     return _login

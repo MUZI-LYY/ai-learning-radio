@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import BottomNav from "@/components/BottomNav";
 import { api, type TaskStatus } from "@/lib/api";
-import { useMe } from "@/lib/use-me";
 
 const STEP_LABELS: Record<string, string> = {
   queued: "排队中",
@@ -24,15 +23,9 @@ const TERMINAL = new Set(["completed", "text_ready", "failed"]);
 
 export default function TaskPage() {
   const params = useParams<{ id: string }>();
-  const router = useRouter();
-  const { unauthorized } = useMe();
   const [task, setTask] = useState<TaskStatus | null>(null);
   const [retrying, setRetrying] = useState(false);
   const [retryingGeneration, setRetryingGeneration] = useState(false);
-
-  useEffect(() => {
-    if (unauthorized) router.replace("/");
-  }, [unauthorized, router]);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;

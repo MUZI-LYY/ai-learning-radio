@@ -14,7 +14,7 @@ npm ci
 npm run dev
 ```
 
-开发服务器默认运行在 <http://127.0.0.1:3001>。前端通过 `frontend/.env.local` 中的 `NEXT_PUBLIC_API_BASE` 连接后端；未设置时，本地开发默认使用 `http://127.0.0.1:8002`。生产环境必须把它设置为浏览器可访问的 HTTPS API 地址。
+启动后按终端输出打开页面。前端通过 `frontend/.env.local` 中的 `NEXT_PUBLIC_API_BASE` 连接后端；生产环境必须把它设置为浏览器可访问的 HTTPS API 地址。
 
 ## 质量检查
 

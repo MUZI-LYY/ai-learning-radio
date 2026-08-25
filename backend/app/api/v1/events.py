@@ -14,7 +14,6 @@ from app.models.program import Program
 router = APIRouter(prefix="/events", tags=["events"])
 
 EVENT_WHITELIST = {
-    "invite_verified",
     "program_play_started",
     "program_play_50_percent",
     "program_play_completed",

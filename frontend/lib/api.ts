@@ -155,7 +155,6 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const isForm = init.body instanceof FormData;
   const res = await fetch(`${apiBase()}${path}`, {
     ...init,
-    credentials: "include",
     headers: {
       ...(isForm ? {} : { "Content-Type": "application/json" }),
       ...(init.headers ?? {}),

@@ -6,7 +6,6 @@
 from app.models.analytics_event import AnalyticsEvent
 from app.models.daily_quota_usage import DailyQuotaUsage
 from app.models.generation_task import GenerationTask
-from app.models.invite_credential import InviteCredential
 from app.models.knowledge_point import KnowledgePoint
 from app.models.learning_source import LearningSource
 from app.models.news_article import NewsArticle
@@ -16,7 +15,6 @@ from app.models.news_source import NewsSource
 from app.models.program import Program
 from app.models.provider_usage import ProviderUsage
 from app.models.recall_question import RecallQuestion
-from app.models.session import Session
 from app.models.task_step import TaskStep
 from app.models.user import User
 
@@ -28,13 +26,11 @@ __all__ = [
     "NewsProgram",
     "NewsSource",
     "GenerationTask",
-    "InviteCredential",
     "KnowledgePoint",
     "LearningSource",
     "Program",
     "ProviderUsage",
     "RecallQuestion",
-    "Session",
     "TaskStep",
     "User",
 ]

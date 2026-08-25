@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import AppIcon from "@/components/AppIcon";
 import BottomNav from "@/components/BottomNav";
@@ -9,16 +8,11 @@ import { api, type NewsChannel, type NewsProgramDetail } from "@/lib/api";
 import { useMe } from "@/lib/use-me";
 
 export default function TodayPage() {
-  const router = useRouter();
-  const { me, loading, unauthorized } = useMe();
+  const { me, loading } = useMe();
   const [programs, setPrograms] = useState<NewsProgramDetail[]>([]);
   const [loadingPrograms, setLoadingPrograms] = useState(true);
   const [error, setError] = useState("");
   const [reloadToken, setReloadToken] = useState(0);
-
-  useEffect(() => {
-    if (unauthorized) router.replace("/");
-  }, [unauthorized, router]);
 
   useEffect(() => {
     if (!me) return;

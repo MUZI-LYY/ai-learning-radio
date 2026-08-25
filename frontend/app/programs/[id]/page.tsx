@@ -7,7 +7,6 @@ import AudioPlayer from "@/components/AudioPlayer";
 import BottomNav from "@/components/BottomNav";
 import { api, audioUrl, type ProgramDetail } from "@/lib/api";
 import { formatProgramCreatedAt, programPresentation } from "@/lib/program-presentation";
-import { useMe } from "@/lib/use-me";
 
 function RecallCard({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
@@ -37,13 +36,8 @@ function RecallCard({ question, answer }: { question: string; answer: string }) 
 export default function ProgramDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const { unauthorized } = useMe();
   const [program, setProgram] = useState<ProgramDetail | null>(null);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (unauthorized) router.replace("/");
-  }, [unauthorized, router]);
 
   useEffect(() => {
     api<ProgramDetail>(`/api/v1/programs/${params.id}`)

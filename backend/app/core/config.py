@@ -10,14 +10,12 @@ from pathlib import Path
 from typing import Self
 from urllib.parse import urlsplit
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # 项目根目录（backend/ 的上一级），用于解析相对存储路径。
 BACKEND_DIR = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = BACKEND_DIR.parent
-DEFAULT_APP_SECRET = "dev-only-secret-change-me"  # pragma: allowlist secret
-DEFAULT_INVITE_CODE_PEPPER = "dev-only-pepper-change-me"  # pragma: allowlist secret
 
 
 class Settings(BaseSettings):
@@ -31,17 +29,9 @@ class Settings(BaseSettings):
 
     # ---- 运行环境 ----
     app_env: str = "development"
-    app_secret: str = Field(default=DEFAULT_APP_SECRET, min_length=16)
     backend_host: str = "127.0.0.1"
     backend_port: int = 8002  # 本地开发默认端口
     frontend_origin: str = "http://127.0.0.1:3001"
-    cookie_secure: bool = False
-
-    # ---- 认证 ----
-    invite_code_pepper: str = Field(default=DEFAULT_INVITE_CODE_PEPPER, min_length=16)
-    session_ttl_seconds: int = 60 * 60 * 24 * 30  # 30 天
-    invite_rate_limit_window_seconds: int = 300
-    invite_rate_limit_max_attempts: int = 10
 
     # ---- 数据与存储 ----
     database_url: str = f"sqlite:///{PROJECT_ROOT / 'data' / 'app.db'}"
@@ -87,22 +77,9 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _validate_production_security(self) -> Self:
-        """非开发环境必须显式满足会话、邀请码和 Cookie 安全基线。"""
+        """非开发环境必须显式满足跨域来源安全基线。"""
         if self.is_development:
             return self
-
-        if self.app_secret == DEFAULT_APP_SECRET:
-            raise ValueError("生产环境 APP_SECRET 不得使用开发默认值")
-        if self.invite_code_pepper == DEFAULT_INVITE_CODE_PEPPER:
-            raise ValueError("生产环境 INVITE_CODE_PEPPER 不得使用开发默认值")
-        if len(self.app_secret) < 32:
-            raise ValueError("生产环境 APP_SECRET 必须至少 32 个字符")
-        if len(self.invite_code_pepper) < 32:
-            raise ValueError("生产环境 INVITE_CODE_PEPPER 必须至少 32 个字符")
-        if self.app_secret == self.invite_code_pepper:
-            raise ValueError("生产环境 APP_SECRET 与 INVITE_CODE_PEPPER 必须不同")
-        if not self.cookie_secure:
-            raise ValueError("生产环境 COOKIE_SECURE 必须为 true")
 
         origin = urlsplit(self.frontend_origin)
         if origin.scheme.lower() != "https" or not origin.netloc:

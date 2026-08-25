@@ -16,13 +16,9 @@ function articleParagraphs(content: string): string[] {
 export default function NewsArticlePage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
-  const { me, loading, unauthorized } = useMe();
+  const { me, loading } = useMe();
   const [article, setArticle] = useState<NewsArticleDetail | null>(null);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (unauthorized) router.replace("/");
-  }, [unauthorized, router]);
 
   useEffect(() => {
     if (!me || !params.id) return;

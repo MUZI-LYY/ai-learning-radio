@@ -83,8 +83,9 @@ def test_delete_all_data_wipes_everything(client, login):
     )
     assert response.status_code == 200
 
-    # 会话已作废，用户不再能访问
-    assert client.get("/api/v1/me").status_code == 401
+    # 本地用户保留，可以继续使用空白电台
+    assert client.get("/api/v1/me").status_code == 200
+    assert client.get("/api/v1/programs").json() == []
 
     # 数据库中节目与资料已删除
     factory = get_session_factory()
