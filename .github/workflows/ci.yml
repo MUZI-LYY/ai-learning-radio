@@ -29,7 +29,7 @@ jobs:
       PROJECT_MONTHLY_BUDGET_CNY: "0"
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -61,7 +61,7 @@ jobs:
       NEXT_PUBLIC_API_BASE: http://127.0.0.1:8002
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
